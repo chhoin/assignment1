@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Tbl_user;
 use App\Tbl_job;
 use App\Tbl_attendee_type;
+use App\Requests\UserRequest;
 
 /**
  * UserController Created on 22/05/2016
@@ -57,7 +58,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         //
     }

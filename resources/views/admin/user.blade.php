@@ -1,10 +1,6 @@
 @extends('app')
-
 @section('head')
-
 @stop
-
-
 @section('body')
 	
 	<div class="container">
@@ -148,7 +144,6 @@
 	</div>
 @stop
 
-
 @section('foot')
 	<script type="text/javascript">
 	function changeType() {
@@ -157,27 +152,25 @@
 		if (type == "all") {
 			$("#searchAll").show();
 			$("#searchName").hide();
-		}else {
+		}
+		else {
 			$("#searchAll").hide();
 			$("#searchName").show();
 		}
 	}
 
-
-		$(document).ready(function() {
-		    $('input[type=radio][name=searchAll]').change(function() {
-		        if (this.value == '1') {
-		            alert("All Research");
-		        }
-		        else if (this.value == '2') {
-		            alert("All Student");
-		        }
-		        else if (this.value == '3') {
-		            alert("All Attentdees");
-		        }
-		    });
+	$(document).ready(function() {
+		$('input[type=radio][name=searchAll]').change(function() {
+		    if (this.value == '1') {
+		        alert("All Research");
+		    }
+		    else if (this.value == '2') {
+		        alert("All Student");
+		    }
+		    else if (this.value == '3') {
+		        alert("All Attentdees");
+		    }
 		});
-
-
+	});
 	</script>
 @stop
