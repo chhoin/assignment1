@@ -23,13 +23,14 @@ Route::get ( '/', function () {
  * 
  */
 Route::group(['middleware' => ['web']], function () {
-	Route::get ( '/user', 'UserController@index' );
-	Route::get ( '/user/view/{id}', 'UserController@show' );
-	Route::get ( '/user/delete/{id}', 'UserController@destroy' );
-	Route::get ( '/user/edit/{id}', 'UserController@edit' );
-	Route::get ( '/user/search', 'UserController@search' );
-	Route::post ( '/user/store', 'UserController@store' );
-	Route::post ( '/user/update', 'UserController@update' );
+	Route::get ('/user', 'UserController@index' );
+	Route::get ('/userall', 'UserController@all' );
+	Route::post ('/user', 'UserController@store' );
+	Route::get ('/user/view/{id}', 'UserController@show' );
+	Route::get ('/user/delete/{id}', 'UserController@destroy' );
+	Route::put ('/user/update/{id}', 'UserController@update' );
+	Route::get ('/user/page/{pageid}/item/{limit}', 'UserController@listUser' );
+	Route::get ('/user/page/{pageid}/item/{limit}/{key}', 'UserController@search' );
 });
 
 /**
@@ -37,11 +38,11 @@ Route::group(['middleware' => ['web']], function () {
  * 
  */
 Route::group(['middleware' => ['web']], function () {
-	Route::get ( '/job', 'JobController@index' );
-	Route::get ( '/job/view/{id}', 'JobController@show' );
-	Route::get ( '/job/delete/{id}', 'JobController@destroy' );
-	Route::get ( '/job/edit/{id}', 'JobController@edit' );
-	Route::get ( '/job/search', 'JobController@search' );
+	Route::get ('/job', 'JobController@index' );
+	Route::get ('/job/view/{id}', 'JobController@show' );
+	Route::get ('/job/delete/{id}', 'JobController@destroy' );
+	Route::get ('/job/edit/{id}', 'JobController@edit' );
+	Route::get ('/job/search', 'JobController@search' );
 	Route::post ( '/job/store', 'JobController@store' );
 	Route::post ( '/job/update', 'JobController@update' );
 });
@@ -51,11 +52,11 @@ Route::group(['middleware' => ['web']], function () {
  * 
  */
 Route::group(['middleware' => ['web']], function () {
-	Route::get ( '/attendee', 'AttendeeController@index' );
-	Route::get ( '/attendee/view/{id}', 'AttendeeController@show' );
-	Route::get ( '/attendee/delete/{id}', 'AttendeeController@destroy' );
-	Route::get ( '/attendee/edit/{id}', 'AttendeeController@edit' );
-	Route::get ( '/attendee/search', 'AttendeeController@search' );
-	Route::post ( '/attendee/store', 'AttendeeController@store' );
-	Route::post ( '/attendee/update', 'AttendeeController@update' );
+	Route::get ('/attendee', 'AttendeeController@index');
+	Route::get ('/attendee/view/{id}', 'AttendeeController@show');
+	Route::get ('/attendee/delete/{id}', 'AttendeeController@destroy');
+	Route::get ('/attendee/edit/{id}', 'AttendeeController@edit');
+	Route::get ('/attendee/search', 'AttendeeController@search');
+	Route::post ('/attendee/store', 'AttendeeController@store');
+	Route::post ('/attendee/update', 'AttendeeController@update');
 });

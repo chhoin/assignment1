@@ -145,7 +145,7 @@
 @stop
 
 @section('foot')
-	<script type="text/javascript">
+<script type="text/javascript">
 	function changeType() {
 		var type = $("#attendeeType").val();
 	
@@ -172,5 +172,5 @@
 		    }
 		});
 	});
-	</script>
+</script>
 @stop

@@ -12,5 +12,6 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  */
 class Tbl_user extends Eloquent
 {
-    //
+	
+    public $timestamps = false;
 }

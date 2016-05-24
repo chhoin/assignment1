@@ -23,11 +23,29 @@ class UserRequest extends Request
      */
     public function rules()
     {
+        date_default_timezone_set ( 'Asia/Phnom_Penh' );
+        $create_date = date ( "Y-m-d H:i:s" );
         return [
-            'title' => 'required|min:3|max:255|regex:/^[0-9A-Za-z\s-_]+$/',
-            'description' => 'required|min:3',
-            'ART_IMG' => 'mimes:jpeg,jpg,bmp,png|max:1025px',
-            'category' => 'required|max:255|regex:/^[0-9]$/'
-        ];
+                'name' => 'required',
+                'address' => 'required',
+                'phone' => 'required',
+                'email' => 'required',
+                'job_id_for' =>'required',
+                'attendee_id_for' =>'required',
+                'extra_guest' => 'required',
+                'dinner' => 'required',
+                'paper' => 'required',
+                'created_at'=> $create_date,
+                'updated_at'=> $create_date
+            ];
+    }
+
+    public function response(array $errors) {
+        return response()->json([
+                    'STATUS'=> 'INVALID INPUT',
+                    'MESSAGE'=>'ERROR FOUNDS',
+                    'CODE' => 400,
+                    'ERROR' => $errors
+                ], 200);
     }
 }
