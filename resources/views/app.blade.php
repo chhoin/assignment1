@@ -13,7 +13,7 @@
 	<div class="container-fluid head">
 		<div class="row">
 			<div class="col-xs-12">
-					<h2>Assignment1</h2>
+					<h2>A s s i g n m e n t 1</h2>
 			</div>
 		</div>
 	</div>

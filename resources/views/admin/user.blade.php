@@ -19,10 +19,10 @@
 						<div class="form-group" >
 							<label for="input-text" class="col-sm-2 control-label">Attendee Type :</label>
 							<div id="list" class="col-sm-10">
-								<select class="form-control" id="category" name="category">
-										<option value="">11</option>
-										<option value="">22</option>
+								<select class="form-control" id="att" name="attendeeType">
 								</select>
+								
+								
 								<small id="checkcategory" class="msg" style="color:red"></small>
 							</div>
 						</div>
@@ -78,7 +78,7 @@
 						<div class="form-group">
 							<label for="input-text" class="col-sm-2 control-label">Extra Guest :</label>
 							<div class="col-sm-10">
-								<input type="email" class="form-control" id="title" name="title" value=""  required="required">
+								<input type="text" class="form-control" id="title" name="title" value=""  required="required">
 								<small id="checktitle" class="msg" style="color:red"></small>
 							</div>
 						</div>
@@ -97,8 +97,6 @@
 							<label class="col-sm-2 control-label"></label>
 								<div class="col-sm-5">
 									<input type="submit" value="Confirm"  class="btn btn-success">
-									<button id="clear"  class="btn btn-danger">Cancel</button>
-														
 								</div>
 						</div>
 						
@@ -155,6 +153,42 @@
 
 @section('foot')
 <script type="text/javascript">
+	var limit=0;
+	var offset=1;
+	var totalofrecord =0;
+	var numofpage=1;
+	var url="{{ URL::to('/') }}";
+
+
+	function listAttendeeTitle(data){
+		var str="";
+		for(var i=0; i<data.DATA.length ; i++){
+			str += " <option value='"+data.DATA[i].attendee_id+"'>"+data.DATA[i].attendee_title+"</option>";
+		}
+		//alert(str);
+		return str;
+	}
+
+	/**
+	* 
+	**/
+	function showAttendeeType(data){
+		var str="";
+		$.ajax({
+	    		url: url+'/attendeeall',
+	            type: 'get',
+	            contentType: 'application/json;charset=utf-8',
+	            success: function(data) {
+		            
+	            	if(data.STATUS == true) {
+	            		$("#att").html(listAttendeeTitle(data));
+	            	}
+	            },
+	            error: function(data) {
+	            	alert("listAll() unseccess data");
+	            }
+	        });	   
+	}
 	function changeType() {
 		var type = $("#attendeeType").val();
 	

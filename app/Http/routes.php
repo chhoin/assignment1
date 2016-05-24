@@ -14,10 +14,9 @@
 /**
  * Default route
  */
-Route::get ( '/', function () {
-	return view ( 'admin.user' );
-} );
-
+Route::group(['middleware' => ['web']], function () {
+	Route::get('/','UserController@index');
+});
 /**
  * user route
  * 
@@ -28,7 +27,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::post ('/user', 'UserController@store' );
 	Route::get ('/user/view/{id}', 'UserController@show' );
 	Route::delete ('/user/delete/{id}', 'UserController@destroy' );
-	Route::get ('/user/update/{id}', 'UserController@update' );
+	Route::put ('/user/update/{id}', 'UserController@update' );
 	Route::get ('/user/page/{pageid}/item/{limit}', 'UserController@listUser' );
 	Route::get ('/user/page/{pageid}/item/{limit}/{key}', 'UserController@search' );
 });
@@ -53,10 +52,11 @@ Route::group(['middleware' => ['web']], function () {
  */
 Route::group(['middleware' => ['web']], function () {
 	Route::get ('/attendee', 'AttendeeController@index');
+	Route::get ('/attendeeall', 'AttendeeController@all');
 	Route::get ('/attendee/view/{id}', 'AttendeeController@show');
-	Route::get ('/attendee/delete/{id}', 'AttendeeController@destroy');
+	Route::delete ('/attendee/delete/{id}', 'AttendeeController@destroy');
 	Route::get ('/attendee/edit/{id}', 'AttendeeController@edit');
 	Route::get ('/attendee/search', 'AttendeeController@search');
 	Route::post ('/attendee/store', 'AttendeeController@store');
-	Route::post ('/attendee/update', 'AttendeeController@update');
+	Route::put ('/attendee/update/{id}', 'AttendeeController@update');
 });

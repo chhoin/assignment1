@@ -59,8 +59,12 @@ class UserController extends Controller
     {
         $user = $this->u->all();
         if(!$user){
-            return response()->json(['STATUS'=> FALSE ,'MESSAGE' => 'RECORD NOT FOUND', 'CODE'=> 400], 200);
-        }else{
+            return response()->json([
+                'STATUS'=> FALSE ,
+                'MESSAGE' => 'RECORD NOT FOUND', 
+                'CODE'=> 400], 200);
+        }
+        else{
             return response()->json([
                     'STATUS'=> TRUE,
                     'MESSAGE'=>'RECORD FOUND(S)',
@@ -88,7 +92,7 @@ class UserController extends Controller
                 ], 200);
         }else{
             return response()->json([
-                'STATUS'=> false,
+                'STATUS'=> FALSE,
                 'MESSAGE' => 'USER INSERT UNSUCCESFULL', 
                 'CODE'=> 400], 200);
         }
@@ -103,7 +107,7 @@ class UserController extends Controller
     public function show($id)
     {
         $id = preg_replace ( '#[^0-9]#', '', $id );
-        $user =$this->u->where('user_id', $id)->first();
+        $user =$this->u->where('id', $id)->first();
         
         if(!$user){
             return response()->json([
@@ -143,7 +147,7 @@ class UserController extends Controller
         date_default_timezone_set ( 'Asia/Phnom_Penh' );
         $create_date = date ( "Y-m-d H:i:s" );
         $id = preg_replace ( '#[^0-9]#', '', $id );
-        $update = $this->u->where('user_id', $id)->first();
+        $update = $this->u->where('id', $id)->first();
         if(!$update) {
             return response()->json([
                 'STATUS'=> FALSE,
@@ -181,21 +185,30 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user_id = preg_replace ( '#[^0-9]#', '', $id );
-        $delete = $this->u->where('user_id', $user_id)->first();
-        if($delete->delete()){
-            return response()->json([
-                    'STATUS' => TRUE,
-                    'MESSAGE' => 'USER HAS DELETED',
-                    'CODE' => 422
-            ], 200);
-        }
-        else {
+        date_default_timezone_set ( 'Asia/Phnom_Penh' );
+        $create_date = date ( "Y-m-d H:i:s" );
+        $id = preg_replace ( '#[^0-9]#', '', $id );
+        $delete = $this->u->where('id', $id)->first();
+        if(!$delete) {
             return response()->json([
                 'STATUS'=> FALSE,
                 'MESSAGE' => 'USER ID NOT FOUND', 
-                'CODE'=> 400], 200);
+                'CODE'=> 400
+                ], 200);
         }
+        else {
+            $this->u->where ('id', $id )->update ( [ 
+            'is_active'=> FALSE,
+            'updated_at'=> $create_date
+        ] );
+            
+        return response()->json([
+            'STATUS'=> TRUE,
+            'MESSAGE'=>'USER HAS DELETED',
+            'CODE' => 200
+            ], 200);
+        }
+
     }
 
     /**
@@ -225,7 +238,7 @@ class UserController extends Controller
                 'SHOWITEM'  => $item
         ];
         
-        $user = $this->u->skip($offset)->take($item)->orderBy('user_id', 'desc')->get();
+        $user = $this->u->skip($offset)->take($item)->orderBy('id', 'desc')->get();
         
         if(!$user || $page > $totalpage){
             return response()->json([
@@ -258,7 +271,7 @@ class UserController extends Controller
         $offset = $page * $item - $item;
          
          
-        $count = $this->u->where ( 'pro_name', 'like',  $keySearch . '%' )->count();
+        $count = $this->u->where ( 'name', 'like',  $keySearch . '%' )->count();
         $totalpage = 0;
         if ($count % $item > 0 ){
             $totalpage = floor($count / $item) +1;
@@ -274,7 +287,7 @@ class UserController extends Controller
                 'SHOWITEM'  => $item
         ];
          
-        $user = $this->u->where ( 'pro_name', 'like',  $keySearch . '%' )->skip($offset)->take($item)->orderBy('user_id', 'desc')->get();
+        $user = $this->u->where ( 'name', 'like',  $keySearch . '%' )->skip($offset)->take($item)->orderBy('id', 'desc')->get();
          
         if(!$user  || $page > $totalpage){
             return response()->json([

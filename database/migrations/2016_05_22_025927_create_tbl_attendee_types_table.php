@@ -15,6 +15,7 @@ class CreateTblAttendeeTypesTable extends Migration
         Schema::create('tbl_attendee_types', function (Blueprint $table) {
              $table->increments('attendee_id');
              $table->string('attendee_title','255');
+             $table->boolean('is_active')->default(true);
              $table->timestamps(); 
         });
     }
