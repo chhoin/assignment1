@@ -5,8 +5,8 @@
 	
 	<div class="container">
 		  <ul class="nav nav-tabs">
-		    <li class="active"><a data-toggle="tab" href="#home">Registation Information</a></li>
-		    <li><a data-toggle="tab" href="#menu1">Admin</a></li>
+		    <li class="active"><a data-toggle="tab" href="#home">REGISTRATION</a></li>
+		    <li><a data-toggle="tab" href="#menu1">ADMIN</a></li>
 		  </ul>
 
 		  <div class="tab-content">
@@ -15,7 +15,7 @@
 		    <br/>
 		      <form action="" id="formstudent" enctype="multipart/form-data">
 					<div class="form-horizontal">
-
+						<h3 style="color:green">Registration Information:</h3><br/>
 						<div class="form-group" >
 							<label for="input-text" class="col-sm-2 control-label">Attendee Type :</label>
 							<div id="list" class="col-sm-10">
@@ -50,7 +50,7 @@
 								<small id="checktitle" class="msg" style="color:red"></small>
 							</div>
 						</div>
-
+						<h3 style="color:green">Personal Information:</h3><br/>
 						<div class="form-group">
 							<label for="input-text" class="col-sm-2 control-label">Name :</label>
 							<div class="col-sm-10">
@@ -93,6 +93,14 @@
 								<small id="checkcategory" class="msg" style="color:red"></small>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label"></label>
+								<div class="col-sm-5">
+									<input type="submit" value="Confirm"  class="btn btn-success">
+									<button id="clear"  class="btn btn-danger">Cancel</button>
+														
+								</div>
+						</div>
 						
 					</div>
 				</form>
@@ -101,6 +109,7 @@
 		    <!-- admin action-->
 		    <div id="menu1" class="tab-pane fade">
 		      	<br/>
+
 		        <form action="" id="formstudent" enctype="multipart/form-data">
 					<div class="form-horizontal">
 

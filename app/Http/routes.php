@@ -27,8 +27,8 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get ('/userall', 'UserController@all' );
 	Route::post ('/user', 'UserController@store' );
 	Route::get ('/user/view/{id}', 'UserController@show' );
-	Route::get ('/user/delete/{id}', 'UserController@destroy' );
-	Route::put ('/user/update/{id}', 'UserController@update' );
+	Route::delete ('/user/delete/{id}', 'UserController@destroy' );
+	Route::get ('/user/update/{id}', 'UserController@update' );
 	Route::get ('/user/page/{pageid}/item/{limit}', 'UserController@listUser' );
 	Route::get ('/user/page/{pageid}/item/{limit}/{key}', 'UserController@search' );
 });

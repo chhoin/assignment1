@@ -150,9 +150,9 @@ class UserController extends Controller
                 'MESSAGE' => 'USER ID NOT FOUND', 
                 'CODE'=> 400
                 ], 200);
-        }else {
-            
-        $this->u->where ('user_id', $id )->update ( [ 
+        }
+        else {
+            $this->u->where ('user_id', $id )->update ( [ 
             'name' => $request->get ( 'name' ),
             'address' => $request->get('address'),
             'phone' => $request->get('phone'),
@@ -181,8 +181,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $id = preg_replace ( '#[^0-9]#', '', $id );
-        $delete = $this->u->where('user_id', $id)->first();
+        $user_id = preg_replace ( '#[^0-9]#', '', $id );
+        $delete = $this->u->where('user_id', $user_id)->first();
         if($delete->delete()){
             return response()->json([
                     'STATUS' => TRUE,
@@ -209,7 +209,7 @@ class UserController extends Controller
         $offset = $page * $item - $item;
         
         
-        $count = $this->p->count();
+        $count = $this->u->count();
         $totalpage = 0;
         if ($count % $item > 0){
             $totalpage = floor($count / $item) +1;

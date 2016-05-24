@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Article Management</title>
+	<title>A s s i g n m e n t 1</title>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('asset/css/style.css') }}">
@@ -26,7 +26,7 @@
 	<div class="container-fluid foot">
 		<div class="row">
 			<div class="col-xs-12">
-					<h4>Copy Right@2015</h4>
+					<h4>Copyright@2016</h4>
 			</div>
 		</div>
 	</div>
