@@ -30,15 +30,12 @@ class UserRequest extends Request
                 'email' => 'required|unique:tbl_users,email',
                 'job_id_for' =>'required',
                 'attendee_id_for' =>'required',
-                'extra_guest' => 'required',
-                'dinner' => 'required',
-                'paper' => 'required'
             ];
     }
 
     public function response(array $errors) {
         return response()->json([
-                    'STATUS'=> 'INVALID INPUT',
+                    'STATUS'=> false,
                     'MESSAGE'=>'ERROR FOUND(s)',
                     'CODE' => 400,
                     'ERROR' => $errors

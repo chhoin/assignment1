@@ -60,13 +60,13 @@ class UserController extends Controller
         $user = $this->u->all();
         if(!$user){
             return response()->json([
-                'STATUS'=> FALSE ,
+                'STATUS'=> false ,
                 'MESSAGE' => 'RECORD NOT FOUND', 
                 'CODE'=> 400], 200);
         }
         else{
             return response()->json([
-                    'STATUS'=> TRUE,
+                    'STATUS'=> true,
                     'MESSAGE'=>'RECORD FOUND(S)',
                     'DATA' => $user
             ], 200);
@@ -81,18 +81,33 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $user = $request->all();
-   
-        $insert = $this->u->insert($user);
+        date_default_timezone_set ( 'Asia/Phnom_Penh' );
+        $create_date = date ( "Y-m-d H:i:s" );
+        $data = array (
+                [ 
+                    'name' => $request->get ('name'),
+                    'address' => $request->get ('address'),
+                    'phone' => $request ->get('phone'),
+                    'email' => $request->get('email'),
+                    'extra_guest' => $request ->get('extra_guest'),
+                    'dinner'=> $request->get('dinner'),
+                    'paper' => $request->get('paper'),
+                    'job_id_for' => $request->get('job_id_for'),
+                    'attendee_id_for' => $request->get('attendee_id_for'),
+                    'created_at' => $create_date,
+                    'updated_at' => $create_date
+                ] 
+        );
+        $insert = $this->u->insert($data);
         if($insert) {
                 return response()->json([
-                        'STATUS'=> TRUE,
+                        'STATUS'=> true,
                         'MESSAGE'=>'USER HAS INSERTED.',
                         'CODE' => 200
                 ], 200);
         }else{
             return response()->json([
-                'STATUS'=> FALSE,
+                'STATUS'=> false,
                 'MESSAGE' => 'USER INSERT UNSUCCESFULL', 
                 'CODE'=> 400], 200);
         }
@@ -111,13 +126,13 @@ class UserController extends Controller
         
         if(!$user){
             return response()->json([
-                'STATUS'=> FALSE ,
+                'STATUS'=> false ,
                 'MESSAGE' => 'NOT FOUND', 
                 'CODE'=> 400], 200);
         }
         else{
             return response()->json([
-                    'STATUS'=> TRUE,
+                    'STATUS'=> true,
                     'MESSAGE'=>'RECORD FOUND(S)',
                     'DATA' => $user
             ], 200);
@@ -150,7 +165,7 @@ class UserController extends Controller
         $update = $this->u->where('id', $id)->first();
         if(!$update) {
             return response()->json([
-                'STATUS'=> FALSE,
+                'STATUS'=> false,
                 'MESSAGE' => 'USER ID NOT FOUND', 
                 'CODE'=> 400
                 ], 200);
@@ -161,8 +176,8 @@ class UserController extends Controller
             'address' => $request->get('address'),
             'phone' => $request->get('phone'),
             'email' => $request->get('email'),
-            'job_id_for' => $request->get('job_id_for'),
-            'attendee_id_for' => $request->get('attendee_id_for'),
+            'job_id_for' => $request->get('1'),
+            'attendee_id_for' => $request->get('1'),
             'extra_guest' => $request->get('extra_guest'),
             'dinner' => $request->get('dinner'),
             'paper' => $request->get('paper'),
@@ -170,7 +185,7 @@ class UserController extends Controller
         ] );
             
         return response()->json([
-            'STATUS'=> TRUE,
+            'STATUS'=> true,
             'MESSAGE'=>'USER HAS UPDATED',
             'CODE' => 200
             ], 200);

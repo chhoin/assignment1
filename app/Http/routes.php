@@ -38,6 +38,7 @@ Route::group(['middleware' => ['web']], function () {
  */
 Route::group(['middleware' => ['web']], function () {
 	Route::get ('/job', 'JobController@index' );
+	Route::get ('/joball', 'JobController@all' );
 	Route::get ('/job/view/{id}', 'JobController@show' );
 	Route::get ('/job/delete/{id}', 'JobController@destroy' );
 	Route::get ('/job/edit/{id}', 'JobController@edit' );
