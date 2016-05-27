@@ -25,7 +25,6 @@ class UserRequest extends Request
     {
         return [
                 'name' => 'required|unique:tbl_users,name',
-                'address' => 'required',
                 'phone' => 'required|unique:tbl_users,phone',
                 'email' => 'required|unique:tbl_users,email',
                 'job_id_for' =>'required',

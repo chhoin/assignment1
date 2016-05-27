@@ -29,6 +29,8 @@ Route::group(['middleware' => ['web']], function () {
 	Route::delete ('/user/delete/{id}', 'UserController@destroy' );
 	Route::put ('/user/update/{id}', 'UserController@update' );
 	Route::get ('/user/page/{pageid}/item/{limit}', 'UserController@listUser' );
+	Route::get ('/user/type/{type}/page/{pageid}/item/{limit}', 'UserController@listUserByType' );
+	//Route::get ('/user/job/{type}/page/{pageid}/item/{limit}', 'UserController@listUserByJob' );
 	Route::get ('/user/page/{pageid}/item/{limit}/{key}', 'UserController@search' );
 });
 

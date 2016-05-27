@@ -52,7 +52,7 @@ class AttendeeController extends Controller
      */
     public function all()
     {
-        $attendee = $this->a->all();
+        $attendee = $this->a->where('is_active',true)->get();
         if(!$attendee){
             return response()->json([
                 'STATUS'=> FALSE ,

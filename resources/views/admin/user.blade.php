@@ -20,7 +20,7 @@
 						<div class="form-group">
 							<label for="input-text" class="col-sm-2 control-label">Attendee Type :</label>
 							<div id="list" class="col-sm-10">
-								<select id="attendee_title" name="attendee_title" class="form-control">
+								<select id="attendee_title" name="attendee_title" class="form-control" required="required">
 								</select>							
 								<small id="checkattendeetitle" class="msg" style="color:red"></small>
 							</div>
@@ -103,47 +103,73 @@
 		    </div>
 
 		    <!-- admin action-->
-		    <div id="menu1" class="tab-pane fade">
-		      	<br/>
+		    <div id="menu1" class="tab-pane fade"><br/>
 		        <form action="" id="formstudent" enctype="multipart/form-data">
+		        	<h3 style="color:green">Administrator Information:</h3><br/>
 					<div class="form-horizontal">
 
 						<div class="form-group" >
-							<label for="input-text" class="col-sm-2 control-label">Attendee Type :</label>
+							<label for="input-text" class="col-sm-2 control-label">Attendee Types :</label>
 							<div id="list" class="col-sm-4">
 								<select class="form-control" id="attendeeType" onchange="changeType();" name="category">
-										<option value="all">All Attendees</option>
-										<option value="individual">Individual Attendee</option>
+									<option value="all">All Attendees</option>
+									<option value="individual">Individual Attendees</option>
 								</select>
 								<small id="checkcategory" class="msg" style="color:red"></small>
 							</div>
 						</div>
 
-						<div class="form-group" id="searchAll">
+						<div class="form-group" id="searchAll" on>
 							<label for="input-text" class="col-sm-2 control-label"></label>
-							<div  class="col-sm-10">
-								<label><input type="radio" checked name="searchAll" value="1">All Research</label>
-								<label><input type="radio" name="searchAll" value="2">All Student</label>
-								<label><input type="radio" name="searchAll" value="3">All Attentdees</label>
-								<small id="checkcategory" class="msg" style="color:red"></small>
+							<div class="col-sm-6">
+								
+								
 							</div>
 						</div>
 
 						<div class="form-group" id="searchName" style="display: none;">
-							<label for="input-text" class="col-sm-2 control-label"></label>
-							<div class="input-group  " >
+							<label for="input-text" class="col-sm- control-label"></label>
+							<div class="input-group">
 								<input type="text" class="form-control" id="search" name="search" value="" placeholder="Search for..."> 
 									<span class="input-group-btn"> 
 										<input type="button"  onclick="" value="search" class="btn btn-success">
 									</span>
+							</div>	
+						</div>
+						<br />
+						<div class="row">
+							<div class="panel panel-success">
+								<div class="panel-heading">
+									Attendees List
+								</div>
+								<div class="panel-body">
+									<table class="table table-condensed">
+										<thead>
+											<tr class="success">
+												<th width="5%">ID</th>
+												<th width="20%">Name</th>
+												<th width="20%">Phone</th>
+												<th width="30%">Address</th>
+												<th width="15%">Attendee Type</th>
+												<th width="20%">Job Type</th>
+											</tr>
+										</thead>
+									<tbody>
+
+									</tbody>
+									</table>
+
+									<div class="text-center">
+										<div id="pagination"></div>
+									</div>
+								</div>
+								<div class="panel-footer panel-success"></div>
 							</div>
-							
+
 						</div>
 					</div>
 				</form>
-
 		    </div>
-
 		</div>
 	</div>
 @stop
@@ -159,7 +185,6 @@
 	var numofpage=1;
 	var url="{{ URL::to('/') }}";
 
-
 	showAttendeeType(); // call function Show Attendee Type into Select Dropdown List
 	function showAttendeeType(){
 		$.ajax({
@@ -167,20 +192,19 @@
 	        type: 'get',
 	        contentType: 'application/json;charset=utf-8',
 	        success: function(data) {
-	        if(data.STATUS == true) {
-	           	var str="";
-	           	str+="<option value='0' selected>"+"---Choose Attendee Type--"+"</option>";
-					for(var i=0; i<data.DATA.length ; i++){
-						str += "<option value='"+data.DATA[i].attendee_id+"'>"+data.DATA[i].attendee_title+"</option>";
-					}
-		           	$("#attendee_title").html(str);
-	        	}
-	       	},
+		        if(data.STATUS == true) {
+		           	var str="";
+		           	str+="<option value='0' selected>"+"---Choose Attendee Type--"+"</option>";
+						for(var i=0; i<data.DATA.length ; i++){
+							str += "<option value='"+data.DATA[i].attendee_id+"'>"+data.DATA[i].attendee_title+"</option>";
+						}
+			           	$("#attendee_title").html(str);
+		        	}
+		       	},
 	        error: function(data) {
 	            alert("listAll() unseccess data");
 			}
-	    });	  
-	    
+	    });	   
 	}
 	showJobType();
 	function showJobType(){
@@ -189,20 +213,176 @@
 	        type: 'get',
 	        contentType: 'application/json;charset=utf-8',
 	        success: function(data) {
-	        if(data.STATUS == true) {
-	           	var str="";
-	           		str+="<option value='0' selected>"+"---Choose Job Type---"+"</option>";
-					for(var i=0; i<data.DATA.length; i++){
-						str += "<option value='"+data.DATA[i].job_id+"'>"+data.DATA[i].job_title+"</option>";
-					}
-		           	$("#job_type").html(str);
-	        	}
-	       	},
+	        	if(data.STATUS == true) {
+	           		var str="";
+		           		str+="<option value='0' selected>"+"---Choose Job Type---"+"</option>";
+						for(var i=0; i<data.DATA.length; i++){
+							str += "<option value='"+data.DATA[i].job_id+"'>"+data.DATA[i].job_title+"</option>";
+						}
+			           	$("#job_type").html(str);
+	        		}
+	       		},
 	        error: function(data) {
 	            alert("List Job Type() unseccess data");
 			}
 	    });	  
 	}
+	showAttendeeTypeRadio();
+	function showAttendeeTypeRadio(){
+		$.ajax({
+	    	url: url+'/attendeeall',
+	        type: 'get',
+	        contentType: 'application/json;charset=utf-8',
+	        success: function(data) {
+	        	if(data.STATUS == true) {
+	           		var str="";
+	           		str += "<label><input type='radio' checked='checked' name='rdAttendeeType'  value='0'>"+"All Attentdees"+"</label>&nbsp&nbsp";
+						for(var i=0; i<data.DATA.length; i++){
+							str += "<label><input type='radio' name='rdAttendeeType' value='"+data.DATA[i].attendee_id+"'>"+data.DATA[i].attendee_title+"</label>&nbsp&nbsp";
+						}
+			           	$("#searchAll").html(str);
+	        		}
+	       		},
+	        error: function(data) {
+	            alert("List Job Type() unseccess data");
+			}
+	    });	
+		//$("form input:[name=searchAll]").filter('[value=0]').attr('checked', true);  
+	}
+ 
+	function mystartListAll() {
+		limit=5;																									
+		//alert(limit);
+		$.ajax({   
+		    url: url+'/user/page/'+offset+'/item/'+limit,
+		    type: 'get',
+		    contentType: 'application/json;charset=utf-8',
+		    success: function(data) {
+		    //console.log(data);
+		    	if(data.STATUS == true) {
+		            totalofrecord=data.PAGINATION.TOTALRECORD;
+			        numofpage=data.PAGINATION.TOTALPAGE;
+			            	
+			        showListUserAll(1);
+			        loadPaginationUser();
+			    }
+			},
+		    error: function(data) {
+		        alert("1start () unsuccess data");
+		    }
+		});	  
+	}
+	function showListUserAll(offset){
+		$.ajax({
+	    		url: url+'/user/page/'+offset+'/item/'+limit,
+	            type: 'get',
+	            contentType: 'application/json;charset=utf-8',
+	            success: function(data) {
+	            	if(data.STATUS == true) {
+	            		$("tbody").html(listUserDetail(data));
+	            	}
+	            },
+	            error: function(data) {
+	            	alert("listAll() unseccess data");
+	            }
+	        });	 
+	}
+	function loadPaginationUser() {
+		$('#pagination').bootpag({
+		    total: numofpage,
+		    maxVisible: 5,
+		    leaps: true,
+		    firstLastUse: true,
+		    first: '&#8592;',
+		    last: '&#8594;',
+		    wrapClass: 'pagination',
+		    activeClass: 'active',
+		    disabledClass: 'disabled',
+		    nextClass: 'next',
+		    prevClass: 'prev',
+		    lastClass: 'last',
+		    firstClass: 'first'
+		}).on("page", function(event, num) {
+		showListUserAll(num);
+		}); 
+	}
+
+	function mystartListByAttendeeType() {
+		limit=5;																									
+		//alert(limit);
+		$.ajax({   
+		url: url+'/user/type/'+1+'/page/'+offset+'/item/'+limit,
+		type: 'get',
+		contentType: 'application/json;charset=utf-8',
+		success: function(data) {
+		//console.log(data);
+		    if(data.STATUS == true) {
+		        totalofrecord=data.PAGINATION.TOTALRECORD;
+			    numofpage=data.PAGINATION.TOTALPAGE;
+			    showListUserByAttendeeType(1);
+			   	loadPaginationUserByAttendeeType();
+			}
+		},
+		error: function(data) {
+		    alert("1start () unsuccess data");
+		}
+		});	   
+	}	
+			
+	/*
+	* bootpage show pagination
+	*/
+	function loadPaginationUserByAttendeeType() {
+		$('#pagination').bootpag({
+		    total: numofpage,
+		    maxVisible: 5,
+		    leaps: true,
+		    firstLastUse: true,
+		    first: '&#8592;',
+		    last: '&#8594;',
+		    wrapClass: 'pagination',
+		    activeClass: 'active',
+		    disabledClass: 'disabled',
+		    nextClass: 'next',
+		    prevClass: 'prev',
+		    lastClass: 'last',
+		    firstClass: 'first'
+		}).on("page", function(event, num) {
+			showListUserByAttendeeType(num);
+		}); 
+	}		
+	
+	function showListUserByAttendeeType(offset){
+		$.ajax({
+	    	url: url+'/user/type/'+1+'/page/'+offset+'/item/'+limit,
+	        type: 'get',
+	        contentType: 'application/json;charset=utf-8',
+	        success: function(data) {
+	           	if(data.STATUS == true) {
+	            	$("tbody").html(listUserDetail(data));
+	            }
+	        },
+	        error: function(data) {
+	           	alert("listAll() unseccess data");
+	        }
+	    });	 
+	}
+
+	function listUserDetail(data){
+		var str="";
+			for(var i=0; i<data.DATA.length ; i++) {
+				str +="<tr>"
+					+"<td>"+data.DATA[i].id+"</td>"
+					+"<td>"+data.DATA[i].name+"</td>"
+					+"<td>"+data.DATA[i].phone+"</td>"
+					+"<td>"+data.DATA[i].address+"</td>"
+					+"<td>"+data.DATA[i].attendee_title+"</td>"
+					+"<td>"+data.DATA[i].job_title+"</td>"						
+					+"</tr>";
+			}
+		return str;
+	}
+
 	function changeType() {
 		var type = $("#attendeeType").val();
 	
@@ -215,19 +395,10 @@
 			$("#searchName").show();
 		}
 	}
-
-	$(document).ready(function() {
-		$('input[type=radio][name=searchAll]').change(function() {
-		    if (this.value == '1') {
-		        alert("All Research");
-		    }
-		    else if (this.value == '2') {
-		        alert("All Student");
-		    }
-		    else if (this.value == '3') {
-		        alert("All Attentdees");
-		    }
-		});
+	
+	
+	$('input.rdAttendeeType').on('value_changed', function(e){
+	    console.log('value changed to '+$(this).val());
 	});
 	
 	function InsertUser(){
@@ -301,6 +472,7 @@
 		    if(attendee_title == 0) {
 			   	$("#attendee_title").css("border", "solid 2px red");
 			   	$("#checkattendeetitle").text("Please choose Attendee Type!");
+			   	$("#attendee_title").focus();
 			   	return false;
 			    
 			}
@@ -316,6 +488,7 @@
 		    if(job_type == 0) {
 			   	$("#job_type").css("border", "solid 2px red");
 			   	$("#checkjobtype").text("Please choose Job Type!");
+			   	$("#job_type").focus();
 			   	return false;
 			    
 			}
@@ -332,6 +505,7 @@
 	    if(!characterReg.test(name)) {
 			$("#name").css("border", "solid 2px red");
 			$("#checkname").text("Please fill your name!");
+			$("#name").focus();
 			return false;
 		}
 		else{
@@ -346,26 +520,28 @@
 			    if(!characterReg.test(name)) {
 			    	$("#phone").css("border", "solid 2px red");
 			    	$("#checkphone").text("Phone require number only!");
-			    	   return false;
+			    	
+			    	return false;
 			    
 			    }else{
 			    	$("#phone").css("border", "solid 2px green");
 			    	$("#checkphone").text("");
 			    	return true;
 			    }
-		}
-		function valideEmail(){
-			var name= $("#email").val();
-			    if(name == "" || name === null) {
-			    	$("#email").css("border", "solid 2px red");
-			    	$("#checkemail").text("Email require!");
-			    	   return false;
+	}
+	function valideEmail(){
+		var name= $("#email").val();
+			if(name == "" || name === null) {
+			    $("#email").css("border", "solid 2px red");
+			    $("#checkemail").text("Email require!");
+			    $("#email").focus();
+			    return false;
 			    
-			    }else{
-			    	$("#email").css("border", "solid 2px green");
-			    	$("#checkemail").text("");
-			    	return true;
-			    }
-		}
+			}else{
+			   	$("#email").css("border", "solid 2px green");
+			    $("#checkemail").text("");
+			    return true;
+			}
+	}
 </script>
 @stop
