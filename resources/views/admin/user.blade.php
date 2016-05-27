@@ -119,7 +119,7 @@
 							</div>
 						</div>
 
-						<div class="form-group" id="searchAll" on>
+						<div class="form-group" id="searchAll">
 							<label for="input-text" class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
 								
@@ -236,9 +236,9 @@
 	        success: function(data) {
 	        	if(data.STATUS == true) {
 	           		var str="";
-	           		str += "<label><input type='radio' checked='checked' name='rdAttendeeType'  value='0'>"+"All Attentdees"+"</label>&nbsp&nbsp";
+	           		str += "<label><input type='radio' id='rdAttendeeType' checked='checked' name='rdAttendeeType'  value='0'>"+"All Attentdees"+"</label>&nbsp&nbsp";
 						for(var i=0; i<data.DATA.length; i++){
-							str += "<label><input type='radio' name='rdAttendeeType' value='"+data.DATA[i].attendee_id+"'>"+data.DATA[i].attendee_title+"</label>&nbsp&nbsp";
+							str += "<label><input type='radio' id='rdAttendeeType' name='rdAttendeeType' value='"+data.DATA[i].attendee_id+"'>"+data.DATA[i].attendee_title+"</label>&nbsp&nbsp";
 						}
 			           	$("#searchAll").html(str);
 	        		}
@@ -397,8 +397,9 @@
 	}
 	
 	
-	$('input.rdAttendeeType').on('value_changed', function(e){
-	    console.log('value changed to '+$(this).val());
+	$(document).on('click',"#rdAttendeeType", function(){
+		alert("twst");
+	
 	});
 	
 	function InsertUser(){
