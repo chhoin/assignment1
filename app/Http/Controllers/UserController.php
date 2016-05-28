@@ -286,18 +286,31 @@ class UserController extends Controller
             ], 200);
         } 
     }
-
-    public function listUserByType($type,$page, $limit)
+    /**
+     * function listUser by Type ID:
+     * (Write you description)
+     */
+    public function listUserByAttendeeType($type,$page, $limit)
     {
         $page = preg_replace ( '#[^0-9]#', '', $page );
         $item = preg_replace ( '#[^0-9]#', '', $limit );
         $offset = $page * $item - $item;
         
-        
-       $count = $this->u->join ('tbl_attendee_types', 'tbl_attendee_types.attendee_id', '=', 'tbl_users.attendee_id_for' )
+        if($type == 0){
+            $count = $this->u->join ('tbl_attendee_types', 'tbl_attendee_types.attendee_id', '=', 'tbl_users.attendee_id_for' )
                         ->where('tbl_attendee_types.is_active', true)
+                        ->where('tbl_users.is_active', true)
+                        ->count();
+        }
+        else
+        {
+            $count = $this->u->join ('tbl_attendee_types', 'tbl_attendee_types.attendee_id', '=', 'tbl_users.attendee_id_for' )
+                        ->where('tbl_attendee_types.is_active', true)
+                        ->where('tbl_users.is_active',true)
                         ->where('tbl_attendee_types.attendee_id', $type)
                         ->count();
+        }
+        
         $totalpage = 0;
         if ($count % $item > 0){
             $totalpage = floor($count / $item) +1;
@@ -318,7 +331,19 @@ class UserController extends Controller
         //                 ->where('is_active',true)
         //                 ->orderBy('id', 'asc')
         //                 ->get();
-        $user = $this->u->join ('tbl_jobs', 'tbl_jobs.job_id', '=', 'tbl_users.job_id_for' )
+        if($type == 0){
+            $user = $this->u->join ('tbl_jobs', 'tbl_jobs.job_id', '=', 'tbl_users.job_id_for' )
+                        ->join ('tbl_attendee_types','tbl_attendee_types.attendee_id','=','tbl_users.attendee_id_for')
+                        ->select('tbl_users.*','tbl_attendee_types.attendee_title','tbl_jobs.job_title')
+                        ->skip($offset)
+                        ->take($item)
+                        ->where('tbl_users.is_active', true)
+                        ->orderBy ( 'tbl_users.id', 'asc' )
+                        ->get();
+        }
+        else
+        {
+            $user = $this->u->join ('tbl_jobs', 'tbl_jobs.job_id', '=', 'tbl_users.job_id_for' )
                         ->join ('tbl_attendee_types','tbl_attendee_types.attendee_id','=','tbl_users.attendee_id_for')
                         ->select('tbl_users.*','tbl_attendee_types.attendee_title','tbl_jobs.job_title')
                         ->skip($offset)
@@ -327,6 +352,8 @@ class UserController extends Controller
                         ->where('tbl_attendee_types.attendee_id', $type)
                         ->orderBy ( 'tbl_users.id', 'asc' )
                         ->get();
+        }
+        
         if(!$user || $page > $totalpage){
             return response()->json([
                 'STATUS'=> FALSE ,

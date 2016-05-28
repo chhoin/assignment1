@@ -122,23 +122,26 @@
 						<div class="form-group" id="searchAll">
 							<label for="input-text" class="col-sm-2 control-label"></label>
 							<div class="col-sm-6">
-								
-								
+								<div id="rdgroup"></div>
 							</div>
 						</div>
 
 						<div class="form-group" id="searchName" style="display: none;">
-							<label for="input-text" class="col-sm- control-label"></label>
-							<div class="input-group">
-								<input type="text" class="form-control" id="search" name="search" value="" placeholder="Search for..."> 
-									<span class="input-group-btn"> 
-										<input type="button"  onclick="" value="search" class="btn btn-success">
-									</span>
-							</div>	
+							<div class="container">
+								<div class="col-sm-12 pull-center">
+									<label for="input-text" class="col-sm-12 control-label"></label>
+									<div class="input-group">
+										<input type="text" class="form-control" id="search" name="search" value="" placeholder="Search for..."> 
+										<span class="input-group-btn"> 
+											<input type="button"  onclick="" value="search" class="btn btn-success">
+										</span>
+									</div>	
+								</div>
+							</div>
 						</div>
 						<br />
 						<div class="row">
-							<div class="panel panel-success">
+							<div class="panel panel-primary">
 								<div class="panel-heading">
 									Attendees List
 								</div>
@@ -146,7 +149,7 @@
 									<table class="table table-condensed">
 										<thead>
 											<tr class="success">
-												<th width="5%">ID</th>
+												<th width="5%">No</th>
 												<th width="20%">Name</th>
 												<th width="20%">Phone</th>
 												<th width="30%">Address</th>
@@ -163,7 +166,7 @@
 										<div id="pagination"></div>
 									</div>
 								</div>
-								<div class="panel-footer panel-success"></div>
+								
 							</div>
 
 						</div>
@@ -184,7 +187,13 @@
 	var totalofrecord =0;
 	var numofpage=1;
 	var url="{{ URL::to('/') }}";
+	
+	mystartListByAttendeeType(0);
 
+	/*
+	* Show Attendee type to Dropdown List #job_type
+	* by Sotheara 2016-05-24
+	*/
 	showAttendeeType(); // call function Show Attendee Type into Select Dropdown List
 	function showAttendeeType(){
 		$.ajax({
@@ -202,10 +211,14 @@
 		        	}
 		       	},
 	        error: function(data) {
-	            alert("listAll() unseccess data");
+	            console.log("erorr:"+ data);
 			}
 	    });	   
 	}
+	/*
+	* Show Job Type to Dropdown List #job_type
+	* by Sotheara 2016-05-24 9:34PM
+	*/
 	showJobType();
 	function showJobType(){
 		$.ajax({
@@ -223,10 +236,15 @@
 	        		}
 	       		},
 	        error: function(data) {
-	            alert("List Job Type() unseccess data");
+	            console.log("erorr:"+ data);
 			}
 	    });	  
 	}
+	/*
+	* Show Attendee Type convert into Radio Button
+	* Method Get from tbl_attendee_type
+	* by Sotheara 2016-05-28 3:20PM
+	*/
 	showAttendeeTypeRadio();
 	function showAttendeeTypeRadio(){
 		$.ajax({
@@ -240,78 +258,33 @@
 						for(var i=0; i<data.DATA.length; i++){
 							str += "<label><input type='radio' id='rdAttendeeType' name='rdAttendeeType' value='"+data.DATA[i].attendee_id+"'>"+data.DATA[i].attendee_title+"</label>&nbsp&nbsp";
 						}
-			           	$("#searchAll").html(str);
+			           	$("#rdgroup").html(str);
 	        		}
 	       		},
 	        error: function(data) {
-	            alert("List Job Type() unseccess data");
+	            console.log("erorr:"+ data);
 			}
 	    });	
-		//$("form input:[name=searchAll]").filter('[value=0]').attr('checked', true);  
-	}
- 
-	function mystartListAll() {
-		limit=5;																									
-		//alert(limit);
-		$.ajax({   
-		    url: url+'/user/page/'+offset+'/item/'+limit,
-		    type: 'get',
-		    contentType: 'application/json;charset=utf-8',
-		    success: function(data) {
-		    //console.log(data);
-		    	if(data.STATUS == true) {
-		            totalofrecord=data.PAGINATION.TOTALRECORD;
-			        numofpage=data.PAGINATION.TOTALPAGE;
-			            	
-			        showListUserAll(1);
-			        loadPaginationUser();
-			    }
-			},
-		    error: function(data) {
-		        alert("1start () unsuccess data");
-		    }
-		});	  
-	}
-	function showListUserAll(offset){
-		$.ajax({
-	    		url: url+'/user/page/'+offset+'/item/'+limit,
-	            type: 'get',
-	            contentType: 'application/json;charset=utf-8',
-	            success: function(data) {
-	            	if(data.STATUS == true) {
-	            		$("tbody").html(listUserDetail(data));
-	            	}
-	            },
-	            error: function(data) {
-	            	alert("listAll() unseccess data");
-	            }
-	        });	 
-	}
-	function loadPaginationUser() {
-		$('#pagination').bootpag({
-		    total: numofpage,
-		    maxVisible: 5,
-		    leaps: true,
-		    firstLastUse: true,
-		    first: '&#8592;',
-		    last: '&#8594;',
-		    wrapClass: 'pagination',
-		    activeClass: 'active',
-		    disabledClass: 'disabled',
-		    nextClass: 'next',
-		    prevClass: 'prev',
-		    lastClass: 'last',
-		    firstClass: 'first'
-		}).on("page", function(event, num) {
-		showListUserAll(num);
-		}); 
 	}
 
-	function mystartListByAttendeeType() {
-		limit=5;																									
+	/*
+	* Event Handler Click on Dynmaic Radio Button from DB
+	* by Sotheara edited: by Chhoin 2016-05-27 10:48 PM
+	*/
+	$(document).on('click',"#rdAttendeeType", function(){
+		var type_id = $('input[name=rdAttendeeType]:checked').val();
+		mystartListByAttendeeType(type_id);
+	});	
+	
+	/*
+	* Start 
+	*/
+	function mystartListByAttendeeType(type_id) {
+		limit=5;	
+		//var x = $('input[name=rdAttendeeType]:checked').val();																					
 		//alert(limit);
 		$.ajax({   
-		url: url+'/user/type/'+1+'/page/'+offset+'/item/'+limit,
+		url: url+'/user/type/'+type_id+'/page/'+offset+'/item/'+limit,
 		type: 'get',
 		contentType: 'application/json;charset=utf-8',
 		success: function(data) {
@@ -319,42 +292,24 @@
 		    if(data.STATUS == true) {
 		        totalofrecord=data.PAGINATION.TOTALRECORD;
 			    numofpage=data.PAGINATION.TOTALPAGE;
-			    showListUserByAttendeeType(1);
+			    showListUserByAttendeeType(1, type_id);
 			   	loadPaginationUserByAttendeeType();
 			}
 		},
 		error: function(data) {
-		    alert("1start () unsuccess data");
+		    console.log("erorr:"+ data);
 		}
 		});	   
 	}	
-			
-	/*
-	* bootpage show pagination
-	*/
-	function loadPaginationUserByAttendeeType() {
-		$('#pagination').bootpag({
-		    total: numofpage,
-		    maxVisible: 5,
-		    leaps: true,
-		    firstLastUse: true,
-		    first: '&#8592;',
-		    last: '&#8594;',
-		    wrapClass: 'pagination',
-		    activeClass: 'active',
-		    disabledClass: 'disabled',
-		    nextClass: 'next',
-		    prevClass: 'prev',
-		    lastClass: 'last',
-		    firstClass: 'first'
-		}).on("page", function(event, num) {
-			showListUserByAttendeeType(num);
-		}); 
-	}		
 	
-	function showListUserByAttendeeType(offset){
+	/*
+	* Query list user from DB and Display result to #tbody
+	* by Sotheara Datetime: 2016-05-28 3:37 PM
+	*/
+	function showListUserByAttendeeType(offset, type_id){
+
 		$.ajax({
-	    	url: url+'/user/type/'+1+'/page/'+offset+'/item/'+limit,
+	    	url: url+'/user/type/'+type_id+'/page/'+offset+'/item/'+limit,
 	        type: 'get',
 	        contentType: 'application/json;charset=utf-8',
 	        success: function(data) {
@@ -363,10 +318,34 @@
 	            }
 	        },
 	        error: function(data) {
-	           	alert("listAll() unseccess data");
+	           	console.log("erorr:"+ data);
 	        }
 	    });	 
-	}
+	}	
+	/*
+	* bootpage show pagination
+	*/
+	function loadPaginationUserByAttendeeType() {
+		var x = $('input[name=rdAttendeeType]:checked').val();	
+		$('#pagination').bootpag({
+		    total: numofpage,
+		    maxVisible: 5,
+		    leaps: true,
+		    firstLastUse: true,
+		    first: '&#8592;',
+		    last: '&#8594;',
+		    wrapClass: 'pagination',
+		    activeClass: 'active',
+		    disabledClass: 'disabled',
+		    nextClass: 'next',
+		    prevClass: 'prev',
+		    lastClass: 'last',
+		    firstClass: 'first'
+			}).on("page", function(event, num) {
+				showListUserByAttendeeType(num,x);
+		}); 
+	}		
+	
 
 	function listUserDetail(data){
 		var str="";
@@ -382,7 +361,10 @@
 			}
 		return str;
 	}
-
+	
+	/*
+	* Event Change Type All Attendee adn Indidual attendee
+	*/
 	function changeType() {
 		var type = $("#attendeeType").val();
 	
@@ -393,15 +375,15 @@
 		else {
 			$("#searchAll").hide();
 			$("#searchName").show();
+			mystartListByAttendeeType(0);
 		}
 	}
 	
 	
-	$(document).on('click',"#rdAttendeeType", function(){
-		alert("twst");
-	
-	});
-	
+	/*
+	* Method Insert User 
+	* by Sothera 2016-05-28 3:31 PM
+	*/
 	function InsertUser(){
 		//Register Information
 		var attendee_title = $("#attendee_title").val();
@@ -435,15 +417,19 @@
 			           	$("#checkattendeetitle").text(data.ERROR.attendee_id_for);
 				    }
 				    else{
-			           	alert("insert error check url");
+			           	console.log("Register not completed.");
 				    }
 		        },
 		        error: function(data){
-		           	alert("Create User unseccess data.");
+		           	console.log("erorr:"+ data);
 		        }
 		    });	
 		}    	
 	}
+
+	/*
+	* Clear validation 
+	*/
 	function myClear() {
 		$("#name").val("");
 		$("#title").val("");
@@ -467,6 +453,10 @@
 		$("select#job_type").val("0");
 	}
 
+
+	/*
+	* validation Attendee Title
+	*/
 	function validateAttendeeTitle(){
 		var attendee_title= $("#attendee_title").val();
 			
@@ -483,6 +473,10 @@
 			    return true;
 			}
 	}
+
+	/*
+	* validation Job Type
+	*/
 	function validateJobType(){
 		var job_type= $("#job_type").val();
 			
@@ -500,6 +494,9 @@
 			}
 	}
 
+	/*
+	* validation user name
+	*/
 	function validateName(){
 		var name= $("#name").val();
 		var characterReg = /^[\sa-zA-Z0-9!@#$%^&*()-_=+\[\]{}|\\:?/.,]{3,255}$/;
@@ -515,6 +512,10 @@
 			return true;
 		}
 	}
+
+	/*
+	* validation Phone number
+	*/
 	function validatePhone(){
 			var name= $("#phone").val();
 			var characterReg = /^[\s0-9$]{1,100}$/;
@@ -530,6 +531,10 @@
 			    	return true;
 			    }
 	}
+
+	/*
+	* validation Email Address
+	*/
 	function valideEmail(){
 		var name= $("#email").val();
 			if(name == "" || name === null) {
