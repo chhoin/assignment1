@@ -361,7 +361,7 @@
 			}
 		return str;
 	}
-	
+
 	/*
 	* Event Change Type All Attendee adn Indidual attendee
 	*/
@@ -482,7 +482,7 @@
 			
 		    if(job_type == 0) {
 			   	$("#job_type").css("border", "solid 2px red");
-			   	$("#checkjobtype").text("Please choose Job Type!");
+			   	$("#checkjobtype").text("Please choose Job name!");
 			   	$("#job_type").focus();
 			   	return false;
 			    
@@ -502,7 +502,7 @@
 		var characterReg = /^[\sa-zA-Z0-9!@#$%^&*()-_=+\[\]{}|\\:?/.,]{3,255}$/;
 	    if(!characterReg.test(name)) {
 			$("#name").css("border", "solid 2px red");
-			$("#checkname").text("Please fill your name!");
+			$("#checkname").text("Please fill your name! and must be more than 3 characters.");
 			$("#name").focus();
 			return false;
 		}
@@ -536,14 +536,21 @@
 	* validation Email Address
 	*/
 	function valideEmail(){
+		var emailReg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 		var name= $("#email").val();
 			if(name == "" || name === null) {
 			    $("#email").css("border", "solid 2px red");
-			    $("#checkemail").text("Email require!");
+			    $("#checkemail").text("Email field require!");
 			    $("#email").focus();
 			    return false;
-			    
-			}else{
+			} 
+			if(!emailReg.test(name)){
+				$("#email").css("border", "solid 2px red");
+			    $("#checkemail").text("Email is not completed.!");
+			    $("#email").focus();
+			    return false;
+			}
+			else{
 			   	$("#email").css("border", "solid 2px green");
 			    $("#checkemail").text("");
 			    return true;

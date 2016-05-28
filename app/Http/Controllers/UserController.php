@@ -53,7 +53,8 @@ class UserController extends Controller
     }
 
     /**
-     * all
+     * returl all list user
+     * by sotheara create on 2016-05-28 3:59PM
      */
     public function all()
     {
@@ -81,7 +82,7 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * create user
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -121,7 +122,7 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * by sotheara 2016-05-28 4:00PM
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -158,6 +159,7 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * Update User by user id
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -232,7 +234,9 @@ class UserController extends Controller
     }
 
     /**
-    * List User
+    * List User by number of page and number of limit
+    * @param $page
+    * @param @limit
     */
 
     public function listUser($page, $limit)
@@ -286,9 +290,13 @@ class UserController extends Controller
             ], 200);
         } 
     }
+
     /**
      * function listUser by Type ID:
-     * (Write you description)
+     * by Sotheara 2016-05-24 6:00PM
+     * @param type id of attendee type
+     * @param page number of page to display
+     * @param limit number
      */
     public function listUserByAttendeeType($type,$page, $limit)
     {
