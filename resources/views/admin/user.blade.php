@@ -29,7 +29,7 @@
 						<div class="form-group">
 							<label for="input-text" class="col-sm-2 control-label">Extra Guest :</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="extra_guest" name="extra_guest" value="">
+								<input type="text" class="form-control" id="extra_guest" name="extra_guest" value="" placeholder="Extra guest">
 								<small id="checkextra_guest" class="msg" style="color:red"></small>
 							</div>
 						</div>
@@ -54,7 +54,7 @@
 						<div class="form-group">
 							<label for="input-text" class="col-sm-2 control-label">Name :</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="name" name="name" value="">
+								<input type="text" class="form-control" id="name" name="name" value="" placeholder="Name">
 								<small id="checkname" class="msg" style="color:red"></small>
 							</div>
 						</div>
@@ -62,23 +62,23 @@
 						<div class="form-group">
 							<label for="input-text" class="col-sm-2 control-label">Address :</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="address" name="address" value="">
+								<input type="text" class="form-control" id="address" name="address" value="" placeholder="Address">
 								<small id="checkaddress" class="msg" style="color:red"></small>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="input-text" class="col-sm-2 control-label">Phone :</label>
+							<label for="input-text" class="col-sm-2 control-label">Phone number:</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="phone" name="phone" value="">
+								<input type="text" class="form-control" id="phone" name="phone" value="" placeholder="Phone number">
 								<small id="checkphone" class="msg" style="color:red"></small>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="input-text" class="col-sm-2 control-label">Email :</label>
+							<label for="input-text" class="col-sm-2 control-label">Email address :</label>
 							<div class="col-sm-10">
-								<input type="email" class="form-control" id="email" name="email" value="">
+								<input type="email" class="form-control" id="email" name="email" value="" placeholder="Email address">
 								<small id="checkemail" class="msg" style="color:red"></small>
 							</div>
 						</div>
@@ -129,13 +129,15 @@
 						<div class="form-group" id="searchName" style="display: none;">
 							<div class="container">
 								<div class="col-sm-12 pull-center">
+
 									<label for="input-text" class="col-sm-12 control-label"></label>
 									<div class="input-group">
 										<input type="text" class="form-control" id="search" name="search" value="" placeholder="Search for..."> 
 										<span class="input-group-btn"> 
-											<input type="button"  onclick="" value="search" class="btn btn-success">
+											<input type="button"  onclick="Search();" value="search" class="btn btn-success">
 										</span>
-									</div>	
+									</div>
+									<small id="checksearch" class="msg" style="color:red"></small>	
 								</div>
 							</div>
 						</div>
@@ -344,8 +346,50 @@
 			}).on("page", function(event, num) {
 				showListUserByAttendeeType(num,x);
 		}); 
-	}		
-	
+	}
+	/*
+	* bootpage show pagination
+	*/
+	function loadPaginationUserBySearch() {
+		//var x = $('input[name=rdAttendeeType]:checked').val();	
+		$('#pagination').bootpag({
+		    total: numofpage,
+		    maxVisible: 5,
+		    leaps: true,
+		    firstLastUse: true,
+		    first: '&#8592;',
+		    last: '&#8594;',
+		    wrapClass: 'pagination',
+		    activeClass: 'active',
+		    disabledClass: 'disabled',
+		    nextClass: 'next',
+		    prevClass: 'prev',
+		    lastClass: 'last',
+		    firstClass: 'first'
+			}).on("page", function(event, num) {
+				showListUserBySearch(num);
+		}); 
+	}				
+	/*
+	* Query list user from DB and Display result to #tbody
+	* by Sotheara Datetime: 2016-05-28 3:37 PM
+	*/
+	function showListUserBySearch(offset){
+
+		$.ajax({
+	    	url: url+'/user/page/'+offset+'/item/'+limit,
+	        type: 'get',
+	        contentType: 'application/json;charset=utf-8',
+	        success: function(data) {
+	           	if(data.STATUS == true) {
+	            	$("tbody").html(listUserDetail(data));
+	            }
+	        },
+	        error: function(data) {
+	           	console.log("erorr:"+ data);
+	        }
+	    });	 
+	}	
 
 	function listUserDetail(data){
 		var str="";
@@ -555,6 +599,47 @@
 			    $("#checkemail").text("");
 			    return true;
 			}
+	}
+
+	/**
+	* Search Attendee
+	**/
+	function Search() {
+		var key =$("#search").val();
+		var characterReg = /^[\ba-zA-Z0-9\s-_.]+$/;
+			
+		if(key.length >= 1 && characterReg.test(key)) {
+				
+			$("#search").css("border", "solid 2px green");
+			$("#checksearch").text("");
+				
+			$.ajax({ 
+				url: url+'/user/page/'+offset+'/item/'+limit+'/'+key,
+				type: 'get',
+				contentType: 'application/json;charset=utf-8',
+				success: function(data) {
+					if(data.STATUS == true) {
+					            	//alert(data.PAGINATION.TOTALRECORD);
+					            	//alert(data.PAGINATION.TOTALPAGE);
+						totalofrecord = data.PAGINATION.TOTALRECORD;
+					    numofpage = data.PAGINATION.TOTALPAGE;
+					    loadPaginationUserBySearch();
+				        $("tbody").html(listUserDetail(data));
+				        //alert("search");
+				    }
+				    else {
+				        swal("Search Not Found");
+					}
+				},
+				error: function(data) {
+					console.log("erorr:"+ data);
+				}
+			}); 
+		}
+		else{
+			$("#search").css("border", "solid 2px red");
+			$("#checksearch").text("Require, at least 2, less than 100, not allow special symbol");
+		}
 	}
 </script>
 @stop

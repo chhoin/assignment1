@@ -391,7 +391,12 @@ class UserController extends Controller
         $item = preg_replace ( '#[^0-9]#', '', $limit );
         $offset = $page * $item - $item;
               
-        $count = $this->u->where ( 'name', 'like',  $keySearch . '%' )->count();
+        $count = $this->u->join('tbl_jobs','tbl_jobs.job_id','=','tbl_users.job_id_for')
+                        ->join('tbl_attendee_types','tbl_attendee_types.attendee_id','=','tbl_users.attendee_id_for')
+                        ->select('tbl_users.*','tbl_attendee_types.attendee_title','tbl_jobs.job_title')
+                        ->where('tbl_users.is_active', true)
+                        ->where ('tbl_users.name', 'like',  '%'.$keySearch. '%')
+                        ->count();
         $totalpage = 0;
         if ($count % $item > 0 ){
             $totalpage = floor($count / $item) +1;
@@ -407,8 +412,15 @@ class UserController extends Controller
                 'SHOWITEM'  => $item
         ];
          
-        $user = $this->u->where ( 'name', 'like',  $keySearch . '%' )->skip($offset)->take($item)->orderBy('id', 'desc')->get();
-         
+        $user = $this->u->join('tbl_jobs','tbl_jobs.job_id','=','tbl_users.job_id_for')
+                        ->join('tbl_attendee_types','tbl_attendee_types.attendee_id','=','tbl_users.attendee_id_for')
+                        ->select('tbl_users.*','tbl_attendee_types.attendee_title','tbl_jobs.job_title')
+                        ->skip($offset)
+                        ->take($item)
+                        ->where('tbl_users.is_active', true)
+                        ->where('tbl_users.name', 'like',  '%'.$keySearch.'%' )
+                        ->orderBy('tbl_users.id', 'desc')
+                        ->get();
         if(!$user  || $page > $totalpage){
             return response()->json([
                 'STATUS'=>  FALSE ,

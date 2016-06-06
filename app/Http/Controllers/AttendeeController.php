@@ -269,7 +269,10 @@ class AttendeeController extends Controller
                 'SHOWITEM'  => $item
         ];
          
-        $attendee_type = $this->a->where ( 'attendee_title', 'like',  $keySearch . '%' )->skip($offset)->take($item)->orderBy('attendee_id', 'desc')->get();
+        $attendee_type = $this->a->where ( 'attendee_title', 'like',  $keySearch . '%' )
+                                    ->skip($offset)->take($item)
+                                    ->orderBy('attendee_id', 'desc')
+                                    ->get();
          
         if(!$user  || $page > $totalpage){
             return response()->json([
