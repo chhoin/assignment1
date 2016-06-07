@@ -22,9 +22,7 @@
 		</div>
 	</div>
     <br/>
-
-    	@yield('body')
-	
+    	@yield('body')	
 	<br/>
 	<!-- footer -->
 	<div class="container-fluid foot">

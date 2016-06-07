@@ -7,7 +7,7 @@
 	<div class="container">
 		  <ul class="nav nav-tabs">
 		    <li class="active"><a data-toggle="tab" href="#home">REGISTRATION</a></li>
-		    <li><a data-toggle="tab" href="#menu1">ADMIN</a></li>
+		    <li><a data-toggle="tab" onclick="mystartListByAttendeeType(0);" href="#menu1">ADMIN</a></li>
 		  </ul>
 
 		  <div class="tab-content">
@@ -103,7 +103,7 @@
 		    </div>
 
 		    <!-- admin action-->
-		    <div id="menu1" class="tab-pane fade"><br/>
+		    <div id="menu1"  class="tab-pane fade"><br/>
 		        <form action="" id="formstudent" enctype="multipart/form-data">
 		        	<h3 style="color:green">Administrator Information:</h3><br/>
 					<div class="form-horizontal">
@@ -294,8 +294,9 @@
 		    if(data.STATUS == true) {
 		        totalofrecord=data.PAGINATION.TOTALRECORD;
 			    numofpage=data.PAGINATION.TOTALPAGE;
+			    loadPaginationUserByAttendeeType();
 			    showListUserByAttendeeType(1, type_id);
-			   	loadPaginationUserByAttendeeType();
+			   
 			}
 		},
 		error: function(data) {
